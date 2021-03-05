@@ -2,6 +2,7 @@ $(function(){
     
     $("#beolvas").on("click", beolvas);
     $("#kuld").on("click", abBeir);
+    $("article").delegate(".torol", "click", adatTorol);
     
 });
 
@@ -12,14 +13,33 @@ function kiir() {
     $("article").empty();
     
     for (var i = 0; i < telefonkonyvem.length; i++) {
+        var ID = telefonkonyvem[i].ID;
         var nev = telefonkonyvem[i].nev;
         var tel = telefonkonyvem[i].tel;
         var kep = telefonkonyvem[i].kep;
-        var elem = "<div><h2>"+nev+"</h2><p>"+tel+"</p><p>"+kep+"</p><button class='torol'>TÖRÖL</button></div>";
+        var elem = "<div><h2>"+nev+"</h2><p>"+tel+"</p><p>"+kep+"</p><button class='torol' id='"+ID+"'>TÖRÖL</button></div>";
         $("article").append(elem);
     }
     
     
+    
+}
+
+function adatTorol() {
+    console.log("Törlés");
+    var aktElem = $(this).closest("div");
+    var id = $(this).attr("ID");
+    
+    $.ajax({
+        type:"DELETE",
+        url:"torles.php?id="+id,
+        success:function(){
+            aktElem.remove();
+        },
+        error:function(){
+            alert("Hiba az adatok törlésekor!");
+        }
+    });
     
 }
 
